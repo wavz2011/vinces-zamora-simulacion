@@ -1,0 +1,88 @@
+{% extends "header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="{{icono}}"></i> Numeros Seleccionados por el Método {{metodo}}</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>                              
+                    </div>
+                </div>
+                <div class="ibox-content ">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                           <p class="font-bold  alert alert-warning m-b-sm">
+                                {% for n in numbers%}
+                                    {{n}}
+                                {%endfor%}
+                            </p>
+                        </div>
+
+                            
+                    </div>   
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-check-square-o"></i> Metodos de Simulacion</h5><small>Por favor seleccione el metodo que desea probar o tambien puede <a href="/limpiar">generar nuevos numeros</a></small>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>                              
+                    </div>
+                </div>
+                <div class="ibox-content ">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                         <form method="POST" action="">{% csrf_token %}
+                                <div class="i-checks"><label> <input type="radio" name="options"  value="montecarlo" checked=""> <i class="fa fa-braille"></i> Montecarlo </label></div>
+                                <div class="i-checks">
+                                    <label> <input type="radio" name="options"  value="regreLineal" > <i class="fa fa-line-chart"></i> Regresion Lineal </label>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <button class="btn btn-sm btn-primary " type="submit"><strong>Enviar</strong></button>
+                                </div> 
+                        </form>            
+                    </div>   
+                </div>
+            </div>
+        </div>                                                     
+</div>
+    
+    
+    
+ 
+</div>
+
+<br><br><br>
+<div class="row">
+    <div class="footer">
+        <div class="pull-right">
+            <strong>Facci ULEAM</strong>
+        </div>
+        <div>
+            <strong>Copyright</strong> Vinces Zamora Adrian 8vo "A" &copy; 2019
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+<script>
+    {% block jquery%}
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    {% endblock %}
+</script>

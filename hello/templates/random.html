@@ -1,0 +1,53 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                            <h5><i class="fa fa-random"></i> Random</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                
+                            </div>
+                </div>
+                <div class="ibox-content">
+                <p>Por Escribe los numeros que deseas generar</p>
+                    <form method="POST" action="">{% csrf_token %}
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>Numeros a generar</label>
+
+                                <input type="number" class="form-control" name="N" {% if form.N.value != None %}value="{{ form.N.value|stringformat:'s' }}"{% endif %} required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                    <button class="btn btn-sm btn-primary " type="submit"><strong>Calcular</strong></button>
+                            </div> 
+                        </div>
+                        
+                           
+                        </div>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+<br><br><br>
+<div class="row">
+    <div class="footer">
+        <div class="pull-right">
+            <strong>Facci ULEAM</strong>
+        </div>
+        <div>
+            <strong>Copyright</strong> Vinces Zamora Adrian 8vo "A" &copy; 2019
+        </div>
+    </div>
+</div>       
+{% endblock %}

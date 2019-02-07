@@ -1,0 +1,242 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-4"> 
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-random"></i> Generar Campos</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group">
+                                <label>No. Eventos</label>
+                                <input type="number" class="form-control" id="numeventos" value="10" required>
+                            </div>
+                            <div class="form-group">
+                                <div class="btn btn-sm btn-primary " id="btn_generar" type="button"><strong>Generar Campos</strong></div>
+                            </div>
+                                
+                        </div>
+         
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-random"></i> Lineas de Espera</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>                
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <form method="POST" action="">{% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-6">
+                                        <label>Media de tiempo entre llegadas (ƛ)</label>
+                                        <input type="number" class="form-control" name="landa" value="90" placeholder="0.000" min="0" step="0.001" required>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Media de tiempo de servicio (µ)</label>
+                                        <input type="number" class="form-control" name="niu" value="94.737" placeholder="0.000" min="0" step="0.001" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">    
+                                    <div class="generallegada">
+                                        <!-- Aui se generan los campos para ingresar los numero aleatorios de  llegada-->
+                                    </div>
+                                    <div class="generaServicio">
+                                        <!-- Aui se generan los campos para ingresar los numero aleatorios de servicio-->
+                                    </div>                                
+                                </div>
+
+                                <!--div class="form-group col-sm-12">
+                                
+
+                                    <label>Datos Aleatorios de llegada (<a href="/">click aqui para generar</a>)</label>
+                                    <input type="text" class="form-control" name="llegada" value="0.870,0.770,0.040,0.190,0.350,0.400,0.560,0.460,0.120,0.110" required>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label>Datos Aleatorios de servicio (<a href="/">click aqui para generar</a>)</label>
+                                    <input type="text" class="form-control" name="servicio" value="0.710,0.350,0.070,0.160,0.900,0.620,0.540,0.730,0.450,0.690" required>
+                                </div-->
+
+                                <div class="col-sm-12">
+                                    <div class="form-group col-sm-6">
+                                        <button class="btn btn-sm btn-primary " id="btn_enviar" type="submit"><strong>Calcular</strong></button>
+                                    </div> 
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="myModal" class="modal fade " role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Números Aleatorios de LLegada</h4>
+                  </div>
+                  <div class="modal-body">
+                    <iframe class="embed-responsive-item" id="formExterno1" name="formExterno1" src="/metodoLineal" height="500px" width="840"></iframe>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"  id="aleatoriaLlega"  >Seleccionar Datos</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+        <div id="myModal2" class="modal fade " role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Números Aleatorios de Servicio</h4>
+                  </div>
+                  <div class="modal-body">
+                    <iframe class="embed-responsive-item" id="formExterno2" name="formExterno2" src="/metodoLineal" height="500px" width="840"></iframe>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"  id="aleatoriaSirve"  >Seleccionar Datos</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+    </div>
+</div>
+<br><br><br>
+<div class="row">
+    <div class="footer">
+        <div class="pull-right">
+            <strong>Facci ULEAM </strong>
+        </div>
+        <div>
+            <strong>Copyright</strong> Vinces Zamora Adrian 8 "A" &copy; 2019
+        </div>
+    </div>
+</div>       
+{% endblock %}
+<script>
+    {% block jquery%}
+    
+    var btn =document.getElementById('btn_enviar');
+    var num = $('#numeventos').val();
+    btn.disabled = true;
+    $('#btn_generar').click(function(){
+        var num = $('#numeventos').val();
+        //alert(num);
+        var llegada = {{llega}};
+        
+        var llega = '<div class="form-group col-sm-6">';
+        llega+= '<input type="hidden" name="n" value="'+num+'" >';
+
+        llega+= '<label>Datos Aleatorios de llegada (<a  data-toggle="modal" data-target="#myModal">click aqui para generar</a>)</label>';
+        llega+= '<div class="generado">';
+        if(num==llegada.length){
+            for(i=1;i<=num;i++){
+                llega += '<label class="col-sm-1">'+i+'</label>';
+                llega += '<div class="col-lg-10"><input type="number" id="llegada'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="llegada'+i+'" class="form-control" value="'+llegada[i-1]+'"></div>';
+            
+            }
+        }else{
+            for(i=+1;i<=num;i++){
+                llega += '<label class="col-sm-1">'+i+'</label>';
+                llega += '<div class="col-lg-10"><input type="number" id="llegada'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="llegada'+i+'" class="form-control"></div>';
+            }
+        }
+            llega += '</div>';
+        llega += '</div>';
+
+
+        var servicio = {{sirve}};
+        var servi = '<div class="form-group col-sm-6">';
+        servi+= '<input type="hidden" name="n" value="'+num+'" required>';
+        servi+= '<label>Datos Aleatorios de servicio (<a  data-toggle="modal" data-target="#myModal2">click aqui para generar</a>)</label>';
+        servi+= '<div class="generado">';
+
+        if(num==servicio.length){
+            for(i=+1;i<=num;i++){
+                
+                servi += '<label class="col-sm-1">'+i+'</label>';
+                servi += '<div class="col-lg-10"><input type="number" placeholder="0.000" min="0" step="0.001" title="Tiempo Servicio" pattern="^\d+(?:\.\d{1,2})?$" required id="servicio'+i+'" name="servicio'+i+'" class="form-control" value="'+servicio[i-1]+'"></div>';
+            }
+        }else{
+            for(i=+1;i<=num;i++){
+                servi += '<label class="col-sm-1">'+i+'</label>';
+                servi += '<div class="col-lg-10"><input type="number" placeholder="0.000" min="0" step="0.001" title="Tiempo Servicio" pattern="^\d+(?:\.\d{1,2})?$" required id="servicio'+i+'" name="servicio'+i+'" class="form-control" ></div>';
+            }
+        }
+            servi += '</div>';
+        servi += '</div>';
+
+
+        //alert(campos);
+        $('.generallegada').html(llega);
+        $('.generaServicio').html(servi);
+        btn.disabled = false;
+
+    });
+    $('#aleatoriaLlega').click(function(){
+        //alert('capturando');
+        
+
+        var array = window.frames["formExterno1"].document.getElementById("holi").value.split(" ").map(function (item) {
+            return parseFloat(item);
+        });
+        //porNombre=[0.339,0.431,0.241,0.304,0.132,0.071,0.913,0.941,0.698,0.657]
+        $('#myModal').modal('hide');
+        //alert(array);
+        
+        for(i=0;i<=array.length;i++){
+            console.log(array[i]);
+            $('#llegada'+i).val(array[i-1]);
+        }
+    });
+
+    $('#aleatoriaSirve').click(function(){
+        //alert('capturando');
+        var array2 = window.frames["formExterno2"].document.getElementById("holi").value.split(" ").map(function (item) {
+            return parseFloat(item);
+        });
+        //porNombre=[0.339,0.431,0.241,0.304,0.132,0.071,0.913,0.941,0.698,0.657]
+        $('#myModal2').modal('hide');
+        //alert(array);
+        
+        for(i=0;i<=array2.length;i++){
+           //console.log(array[i]);
+            $('#servicio'+i).val(array2[i-1]);
+        }
+    });
+
+        {% endblock %}
+</script>

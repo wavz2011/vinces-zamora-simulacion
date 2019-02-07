@@ -1,0 +1,192 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><i class="{{icono}}"></i> Resultados de la {{metodo}}</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link"> <i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive text-center">
+                         <table class=" table table-striped table-bordered table-hover dataTables-example" >
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>X</th>
+                                    <th>Y</th>
+                                    <th>X^2</th>
+                                    <th>XY</th>
+                                    <th>Y^2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for m in m%}
+                                <tr class="gradeX">
+                                    <td>{{m.n}}</td>
+                                    <td>{{m.x}}</td>
+                                    <td>{{m.y}}</td>
+                                    <td>{{m.x2}}</td>
+                                    <td>{{m.xy}}</td>
+                                    <td>{{m.y2}}</td>
+                                </tr>
+                            {%endfor%} 
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                  <td>Σ</td>
+                                    <td>{{sumx}}</td>
+                                    <td>{{sumy}}</td>
+                                    <td>{{sumxcuad}}</td>
+                                    <td>{{sumxy}}</td>
+                                    <td>{{sumycuad}}</td>
+                                </tr>
+                              </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Pronostico</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>                                
+                    </div>
+                </div>
+                
+                <div class="ibox-content">
+                    <H1>Recta econtrada</H1>
+                    <h2>a0= {{a0}}</h2>
+                    <h2>a1= {{a1}}</h2>
+                    <h2>Y = a0 + a1X</h2>
+                    <h2>Y = {{a0}} + {{a1}}X</h2>
+                    <h2>Y = {{a0}} + {{a1}}({{predecir}})</h2>
+                    <h2>Y = {{pron}}</h2>
+                    <p class=" alert alert-warning m-b-sm">El pronostico para X {{predecir}} es de {{pron}}</p>
+                   
+                             
+                </div>   
+            </div>
+        </div> 
+
+    </div>
+     <div class="row">
+        <div class="col-lg-2">
+        </div>
+
+        <div class="col-lg-8">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Gráfico</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link"> <i class="fa fa-chevron-up"></i></a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div>
+                                <canvas id="prueba" height="140"></canvas>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        
+    </div>
+</div>
+
+<br><br><br>
+<div class="row">
+    <div class="footer">
+        <div class="pull-right">
+            <strong>Facci ULEAM</strong>
+        </div>
+        <div>
+           <strong>Copyright</strong> Vinces Zamora Adrian 8 "A" &copy; 2019
+        </div>
+    </div>
+</div>
+   
+
+{% endblock %}
+<script>
+    {% block jquery%}
+    //datatables
+    $('.dataTables-example').DataTable({
+                pageLength: 10,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                     customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                    }
+                    }
+                ]
+
+            });
+
+
+    var data1 = []
+        {%for m in lista1%}
+            data1.push({"x":{{m.x}},"y":{{m.y}}})
+        {%endfor%}
+
+        var data2 = []
+        {%for m in lista2%}
+            data2.push({"x":{{m.x}},"y":{{m.y}}})
+        {%endfor%}
+
+        {%for m in pronos%}
+            data2.push({"x":{{m.x}},"y":{{m.y}}})
+        {%endfor%}
+       // data2.push({{pronos}})
+        //Java Script para el grafico
+        var color = Chart.helpers.color;
+            var scatterChartData = {
+                datasets: [{
+                    label: "X",
+                    borderColor: "#0000FF",
+                    backgroundColor: null,
+                    data: data1
+                }, {
+                    label: "Y",
+                    borderColor: "#FF0000",
+                    backgroundColor: null,
+                    data: data2
+                }]
+            };
+
+        var pOptions = {
+            responsive: true
+        };
+        
+
+
+        var ctx10 = document.getElementById("prueba").getContext("2d");
+        new Chart(ctx10, {type: 'scatter', data: scatterChartData, options:pOptions});
+
+
+
+    {% endblock %}
+</script>
+
+

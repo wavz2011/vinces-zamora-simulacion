@@ -1,0 +1,319 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <form method="POST" action="">{% csrf_token %}
+                    
+        <div class="row">
+            
+            <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5><i class="fa fa-random"></i> Metodo Montecarlo</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <div class="form-group">
+                                    <label>No. Eventos</label>
+                                    <input type="number" class="form-control" id="n_deman" value="5" required>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn btn-sm btn-primary " id="btn_deman" type="button"><strong>Generar Campos</strong></div>
+                                </div>
+                                    
+                            </div>
+             
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins" id="demanda">
+                    <div class="ibox-title">
+                        <h5><i class="fa fa-random"></i> Metodo Montecarlo</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>                
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-sm-12">    
+                                    <div class="generaValor">
+                                            <!-- Aui se generan los campos para ingresar los numero aleatorios de  llegada-->
+                                    </div>
+
+                                    <div class="generaPx">
+                                            <!-- Aui se generan los campos para ingresar los numero aleatorios de servicio-->
+                                    </div>                               
+                                </div>                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+       
+            <div class="col-md-8">
+                <div class="col-md-5"> 
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-random"></i> Numeros Aleatorios</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <div class="form-group">
+                                        <label>No. Eventos</label>
+                                        <input type="number" class="form-control" id="n_alea" value="10" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="btn btn-sm btn-primary " id="btn_alea" type="button"><strong>Generar Campos</strong></div>
+                                    </div>
+                                        
+                                </div>
+                 
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="col-md-7">
+                    <div class="ibox float-e-margins" id="numeros">
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-random"></i> Numeros Aleatorios</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>                
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-sm-12">    
+                                        <div class="aleaDeman">
+                                                <!-- Aui se generan los campos para ingresar los numero aleatorios de  llegada-->
+                                        </div>
+
+                                                                     
+                                    </div>                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="col-sm-12">
+            <button class="btn btn-md btn-success " id="btn_enviar" type="submit"><strong>Calcular</strong></button>
+        </div>
+    </form>
+</div>
+   <div id="myModal" class="modal fade " role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Números Aleatorios de LLegada</h4>
+                  </div>
+                  <div class="modal-body">
+                    <iframe class="embed-responsive-item" id="formExterno1" name="formExterno1" src="/metodoLineal" height="500px" width="840"></iframe>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"  id="aleatoriaLlega"  >Seleccionar Datos</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+<br><br><br>
+<div class="row">
+    <div class="footer">
+        <div class="pull-right">
+            <strong>Facci ULEAM </strong>
+        </div>
+        <div>
+            <strong>Copyright</strong> Vinces Zamora Adrian 8 "A" &copy; 2019
+        </div>
+    </div>
+</div>       
+{% endblock %}
+<script>
+    {% block jquery%}
+    $('#demanda').hide();
+    $('#numeros').hide();
+
+    var demanda = false;
+    var aleatorios = false;
+    setTimeout(function() {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 4000
+                };
+                toastr.success('Para Empezar la simulacion genere los campos del Método Montecarlo y los numeros aleatorios');
+
+            }, 1300);
+
+    var btn =document.getElementById('btn_enviar');
+    //var num = $('#numeventos').val();
+    
+    function verificar(){
+        if ((demanda)&&(aleatorios)){
+            setTimeout(function() {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 4000
+                };
+                toastr.success('Ahora puede empezar la simulacion pulsando el boton Calcular');
+
+            }, 1300);
+            btn.disabled = false;
+        }
+    }
+    
+    btn.disabled = true;
+    //genera los campos para la demanda
+    $('#btn_deman').click(function(){
+        $('#demanda').show();
+        var num = $('#n_deman').val();
+        //alert(num);
+        var l_valor = {{valor}};
+        
+        var valor = '<div class="form-group col-sm-6 text-center"">';
+        valor+= '<input type="hidden" name="nDeman" value="'+num+'" >';
+
+        valor+= '<label>Valor</label>';
+        valor+= '<div class="generado">';
+        if(num==l_valor.length){
+            for(i=1;i<=num;i++){
+                //llega += '<label class="col-sm-1">'+i+'</label>';
+                valor += '<div class="col-lg-10"><input type="number" id="demValor'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="demValor'+i+'" class="form-control" value="'+l_valor[i-1]+'"></div>';
+            
+            }
+        }else{
+            //alert("mas de 6 numeros")
+            for(i=+1;i<=num;i++){
+                //llega += '<label class="col-sm-1">'+i+'</label>';
+                valor += '<div class="col-lg-10"><input type="number" id="demValor'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="demValor'+i+'" class="form-control"></div>';
+            }
+        }
+            valor += '</div>';
+        valor += '</div>';
+
+
+        var l_px = {{px}};
+        
+        var px = '<div class="form-group col-sm-6 text-center"">';
+        px+= '<input type="hidden" name="n" value="'+num+'" >';
+
+        px+= '<label>Px</label>';
+        px+= '<div class="generado">';
+        if(num==l_px.length){
+            for(i=1;i<=num;i++){
+                //llega += '<label class="col-sm-1">'+i+'</label>';
+                px += '<div class="col-lg-10"><input type="number" id="demPx'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="demPx'+i+'" class="form-control" value="'+l_px[i-1]+'"></div>';
+            
+            }
+        }else{
+            //alert("mas de 6 numeros")
+            for(i=+1;i<=num;i++){
+                //llega += '<label class="col-sm-1">'+i+'</label>';
+                px += '<div class="col-lg-10"><input type="number" id="demPx'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="demPx'+i+'" class="form-control"></div>';
+            }
+        }
+            px += '</div>';
+        px += '</div>';
+
+        //alert(campos);
+        $('.generaValor').html(valor);
+        $('.generaPx').html(px);
+        demanda=true;
+        verificar();
+
+    });
+
+
+    //genera los campos para los numeros aleatorios
+    $('#btn_alea').click(function(){
+        $('#numeros').show();
+        var num = $('#n_alea').val();
+        //alert(num);
+        var llegada = {{deman}};
+        
+        var llega = '<div class="form-group col-sm-12">';
+        llega+= '<input type="hidden" name="n" value="'+num+'" >';
+
+        llega+= '<label>Datos Aleatorios de la Demanda (<a  data-toggle="modal" data-target="#myModal">click aqui para generar</a>)</label>';
+        llega+= '<div class="generado">';
+        if(num==llegada.length){
+            for(i=1;i<=num;i++){
+                llega += '<label class="col-sm-1">'+i+'</label>';
+                llega += '<div class="col-lg-10"><input type="number" id="llegada'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="llegada'+i+'" class="form-control" value="'+llegada[i-1]+'"></div>';
+            
+            }
+        }else{
+            for(i=+1;i<=num;i++){
+                llega += '<label class="col-sm-1">'+i+'</label>';
+                llega += '<div class="col-lg-10"><input type="number" id="llegada'+i+'" placeholder="0.000" min="0" step="0.001" title="Tiempo LLegada" pattern="^\d+(?:\.\d{1,2})?$" required name="llegada'+i+'" class="form-control"></div>';
+            }
+        }
+            llega += '</div>';
+        llega += '</div>';
+
+        //alert(campos);
+        $('.aleaDeman').html(llega);
+        aleatorios=true;
+        verificar();
+        
+    });
+
+    $('#aleatoriaLlega').click(function(){
+        //alert('capturando');
+        
+
+        var array = window.frames["formExterno1"].document.getElementById("holi").value.split(" ").map(function (item) {
+            return parseFloat(item);
+        });
+        //porNombre=[0.339,0.431,0.241,0.304,0.132,0.071,0.913,0.941,0.698,0.657]
+        $('#myModal').modal('hide');
+        //alert(array);
+        
+        for(i=0;i<=array.length;i++){
+            console.log(array[i]);
+            $('#llegada'+i).val(array[i-1]);
+        }
+    });
+
+
+
+        {% endblock %}
+</script>
